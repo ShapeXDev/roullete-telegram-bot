@@ -1,0 +1,8 @@
+{
+	"is-now-started": false,
+	"is-game-voted": false,
+	"is-started": false,
+	"max-count": 2,
+	"now-count": 0,
+	"users": {}
+}
