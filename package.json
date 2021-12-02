@@ -1,9 +1,5 @@
 {
   "dependencies": {
-    "express": "^4.17.1",
-    "fetch": "^1.1.0",
-    "node-fetch": "^2.6.6",
-    "selenium-webdriver": "^4.1.0",
     "telebot": "^1.4.1"
   }
 }
