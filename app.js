@@ -2,7 +2,7 @@ const TeleBot = require('telebot');
 const fs = require('fs');
 
 /* Bot information */
-const BOT_TOKEN = "2114012944:AAFb-Jr5s1PeHjPyQSSuRUhxxhb80vHSl3A";
+const BOT_TOKEN = "";
 const BOT_CONFIG = {
 	polling: {
 		interval: 1000,
