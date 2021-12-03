@@ -1,5 +1,4 @@
 const TeleBot = require('telebot');
-const { Builder, By, Key, until } = require('selenium-webdriver');
 const fs = require('fs');
 
 /* Bot information */
@@ -9,13 +8,10 @@ const BOT_CONFIG = {
 		interval: 1000,
 		timeout: 0,
 		limit: 100,
-		retryTimeout: 10000,
-		proxy: ""
+		retryTimeout: 10000
 	},
 	allowedUpdates: []
 }
-
-// const driver = new Builder().forBrowser('chrome').build();
 
 const BOT_SIGNATURE = new TeleBot(BOT_TOKEN, BOT_CONFIG);
 const bot = BOT_SIGNATURE;
@@ -129,7 +125,6 @@ activate_bot();
 
 setInterval(() => {
 	fs.writeFileSync('./game.json', JSON.stringify(gameInfo, null, '\t'));
-	console.log(gameInfo);
 }, 5000);
 
 const random = (max, min) => {
