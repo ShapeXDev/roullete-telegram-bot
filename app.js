@@ -2,7 +2,7 @@ const TeleBot = require('telebot');
 const fs = require('fs');
 const BOT_TOKEN = "";
 const bot = new TeleBot(BOT_TOKEN);
-const get_info = async () => return await bot.getMe()
+const get_info = async () => { return await bot.getMe(); }
 const BOT_INFO = get_info();
 const gameInfo = require('./game.json');
 
