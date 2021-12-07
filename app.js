@@ -1,37 +1,16 @@
 const TeleBot = require('telebot');
 const fs = require('fs');
-
-/* Bot information */
 const BOT_TOKEN = "";
-const BOT_CONFIG = {
-	polling: {
-		interval: 1000,
-		timeout: 0,
-		limit: 100,
-		retryTimeout: 10000
-	},
-	allowedUpdates: []
-}
-
-const BOT_SIGNATURE = new TeleBot(BOT_TOKEN, BOT_CONFIG);
-const bot = BOT_SIGNATURE;
-
-const get_info = async () => {
-	let BOT_INFO = await bot.getMe();
-
-	return BOT_INFO;
-}
+const bot = new TeleBot(BOT_TOKEN);
+const get_info = async () => return await bot.getMe()
 const BOT_INFO = get_info();
-
 const gameInfo = require('./game.json');
 
 bot.on(['text'], ctx => {
 	if (ctx.chat.type !== 'supergroup') {
 		return;
 	}
-});
-
-bot.on(['/roulette'], async ctx => {
+	
 	let admins = await bot.getChatAdministrators(ctx.chat.id);
 	let flag = null;
 
@@ -44,7 +23,9 @@ bot.on(['/roulette'], async ctx => {
 	if (flag === null) {
 		return bot.sendMessage(ctx.chat.id, `${ctx.from.first_name}, Bot has not administrator laws.`);
 	}
+});
 
+bot.on(['/roulette'], async ctx => {
 	if (gameInfo['is-now-started']) {
 		return bot.sendMessage(ctx.chat.id, `${ctx.from.first_name}, Game already has been started.`);
 	}
@@ -100,10 +81,11 @@ bot.on(['/shoot'], async ctx => {
 		return bot.sendMessage(ctx.chat.id, `${ctx.from.first_name}, you has not joined the game!`);
 	}
 
-	const randomUser = random(gameInfo['max-count'], 1);
+	const randomUser = Math.round(Math.random() * (gameInfo['max-count'] - gameInfo['now-count'])) + gameInfo['max-count'];
 
 	await bot.kickChatMember(ctx.chat.id, gameInfo['users'][randomUser], '1d');
 	gameInfo['now-count']--;
+	delete gameInfo['users'][randomUser]
 
 	if (gameInfo['now-count'] < Math.round(gameInfo['max-count'] / 2)) {
 		gameInfo['is-now-started'] = false;
@@ -123,13 +105,8 @@ const activate_bot = async consoleMessage => {
 		throw Error(error);
 	}
 }
-
 activate_bot();
 
 setInterval(() => {
 	fs.writeFileSync('./game.json', JSON.stringify(gameInfo, null, '\t'));
 }, 5000);
-
-const random = (max, min) => {
-	return Math.round(Math.random() * (max - min)) + min;
-}
